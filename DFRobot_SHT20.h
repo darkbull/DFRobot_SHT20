@@ -43,6 +43,9 @@ public:
     float    readTemperature(void);
     byte     readUserRegister(void);
 
+    // 读取温湿度，如果读取失败，返回false
+    bool readTH(float &t, float &h);
+
 private:
     TwoWire *i2cPort;
     byte     checkCRC(uint16_t message_from_sensor, uint8_t check_value_from_sensor);

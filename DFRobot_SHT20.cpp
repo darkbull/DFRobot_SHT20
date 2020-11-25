@@ -53,6 +53,20 @@ float DFRobot_SHT20::readTemperature(void)
     return (realTemperature);
 }
 
+bool DFRobot_SHT20::readTH(float &t, float &h) {
+    uint16_t rawTemperature = readValue(TRIGGER_TEMP_MEASURE_NOHOLD);
+    if(rawTemperature == ERROR_I2C_TIMEOUT || rawTemperature == ERROR_BAD_CRC){
+        return false;
+    }
+    uint16_t rawHumidity = readValue(TRIGGER_HUMD_MEASURE_NOHOLD);
+    if(rawHumidity == ERROR_I2C_TIMEOUT || rawHumidity == ERROR_BAD_CRC){
+        return false;
+    }
+    t = rawTemperature * (175.72 / 65536.0) - 46.85;
+    h = rawHumidity * (125.0 / 65536.0) - 6.0;
+    return true;
+}
+
 void DFRobot_SHT20::setResolution(byte resolution)
 {
     byte userRegister = readUserRegister();
